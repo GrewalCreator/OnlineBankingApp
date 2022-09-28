@@ -1,3 +1,19 @@
+/* Issues with code
+ * Very clustered. Much of the variable initialization can be done elsewhere
+ * GUI and Data functions should be separated
+ * Old Java GUI Library: Update to JavaFx
+ * Multiple Accounts cannot be added: Can't recall why Set<Map.Entry<String,String[]>> was used in the checkAccount()...
+ * ...but definitely could be done differently
+ *
+ * General Note: It was definitely enjoyable to look back at this old program I fortunately recovered and to compare...
+ * ...it to how much I've learned. My reaction to most of this is "Why did I even do that?". Update Coming Soon!
+ */
+
+
+
+
+
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -183,6 +199,12 @@ public class BankPanel extends JPanel{
         addComponents();
         addActionListener();
     }
+    /**
+     * Function: constraints()
+     * Purpose: Initialize Contraints
+     * Parameters: None
+     * Return: None
+     */
     void constraints() {
         //Initialize Constraints
         loginButtonConstraints = new GridBagConstraints();
@@ -301,6 +323,12 @@ public class BankPanel extends JPanel{
 
     }
 
+    /**
+     * Function: addComponents()
+     * Purpose: Add all required Labels, Buttons and other Swing Components
+     * Parameters: None
+     * Return: None
+     */
     void addComponents(){
         //Add Page1 Components
         bankName = new JLabel("G-Bank");
@@ -436,6 +464,12 @@ public class BankPanel extends JPanel{
         this.add(cards);
 
     }
+    /**
+     * Function: addActionListener()
+     * Purpose: Give Buttons Functionality
+     * Parameters: None
+     * Return: None
+     */
     void addActionListener(){
         //Switch to page 2
         signUpButton.addActionListener(e -> cardLayout.show(cards, SIGN_UP_PANEL));
@@ -470,7 +504,12 @@ public class BankPanel extends JPanel{
         //remove money from balance
         finalWithdrawButton.addActionListener(e -> withdrawBalance());
     }
-
+    /**
+     * Function: addAccount()
+     * Purpose: sign-up new accounts
+     * Parameters: None
+     * Return: None
+     */
     void addAccount(){
         newUser = createUserLogin.getText();
         newPass = String.valueOf(createUserPass.getPassword());
@@ -488,6 +527,12 @@ public class BankPanel extends JPanel{
         createUserPass.setText("");
     }
 
+    /**
+     * Function: checkAccounts()
+     * Purpose: Check if account information is valid
+     * Parameters: None
+     * Return: None
+     */
     void checkAccounts(){
         Set<Map.Entry<String,String[]>> entrySet = map.entrySet();
 
@@ -510,7 +555,12 @@ public class BankPanel extends JPanel{
         userTextLogin.setText("");
         passTextLogin.setText("");
     }
-
+    /**
+     * Function: depositBalance()
+     * Purpose: deposit requested amount to users balance
+     * Parameters: None
+     * Return: None
+     */
     void depositBalance(){
         currencyFormat = NumberFormat.getCurrencyInstance();
         try {
@@ -531,14 +581,23 @@ public class BankPanel extends JPanel{
         enterDepositAmount.setText("");
     }
 
+    /**
+     * Function: withdrawBalance()
+     * Purpose: withdraw requested amount from users balance
+     * Parameters: None
+     * Return: None
+     */
     void withdrawBalance() {
+        //Format Currency For Readability
         currencyFormat = NumberFormat.getCurrencyInstance();
         try {
             decreaseBalance = Integer.parseInt(enterWithdrawAmount.getText().trim().strip());
             if (decreaseBalance > 0) {
                 if (balance < decreaseBalance) {
+                    //Display Error Message For Insufficient Funds
                     JOptionPane.showMessageDialog(this, "You Don't Have Enough Money");
                 } else {
+                    //Adjust account information after withdrawal
                     balance -= decreaseBalance;
                     balanceLabel.setText("Your Current Balance Is: " + currencyFormat.format(balance));
                     data = new String[]{newUser, "Withdraw", String.valueOf(decreaseBalance), dtf.format(now)};
@@ -547,6 +606,7 @@ public class BankPanel extends JPanel{
                     JOptionPane.showMessageDialog(this, "Withdraw Successful of $" + currencyFormat.format(decreaseBalance));
                 }
             }else{
+                //Display Error Message For Invalid Withdraw Amount
                 JOptionPane.showMessageDialog(this, "Please Enter An Amount Greater Than 0");
             }
 

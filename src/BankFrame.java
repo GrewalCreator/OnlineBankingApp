@@ -4,6 +4,7 @@ import java.awt.*;
 public class BankFrame extends JFrame {
     BankFrame(){
         this.add(new BankPanel());
+        //Set basic window functionality
         ImageIcon logo = new ImageIcon("BankLogo.png");
         this.setTitle("G-Bank inc.");
         this.setResizable(true);
