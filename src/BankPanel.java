@@ -17,6 +17,7 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.Serial;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -399,7 +400,14 @@ public class BankPanel extends JPanel{
         //Page 5 components
         tableColumns = new String[]{"Name", "Type", "Amount", "Date-Time"};
         tableData = new String[0][];
-        transactionHistoryTable = new JTable(new DefaultTableModel(tableData, tableColumns));
+        transactionHistoryTable = new JTable(new DefaultTableModel(tableData, tableColumns)){
+            @Serial
+            private static final long serialVersionUID = 1L;
+
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
         transactionHistoryTable.setBackground(Color.WHITE);
         transactionHistoryTable.setForeground(Color.BLACK);
@@ -603,7 +611,7 @@ public class BankPanel extends JPanel{
                     data = new String[]{newUser, "Withdraw", String.valueOf(decreaseBalance), dtf.format(now)};
                     thisModel = (DefaultTableModel) transactionHistoryTable.getModel();
                     thisModel.addRow(data);
-                    JOptionPane.showMessageDialog(this, "Withdraw Successful of $" + currencyFormat.format(decreaseBalance));
+                    JOptionPane.showMessageDialog(this, "Withdraw Successful of" + currencyFormat.format(decreaseBalance));
                 }
             }else{
                 //Display Error Message For Invalid Withdraw Amount
